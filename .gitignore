@@ -1,0 +1,5 @@
+# Mac stuff
+**/.DS_Store
+
+# Ignore compiled templates (might eventually move these to dist/)
+*.cfn.template
