@@ -81,3 +81,53 @@ A careful review will reveal the following embedded Ruby:
 This allows calling this snippet as-is, resulting in a sane default of "r3.large" for the parameter. However, if the snippet is called with the "default" key passed, then it will use that value instead. This might be accomplished like this:
 
     <%= snippet 'instance_type_parameter', default: 't2.small' %>
+
+Snippet Sectioning
+----
+
+Using the `params[]` hash, it is possible to provide a section option when calling a snippet and use `if` and `elsif` within a snippet to only provide the requested section. This has the advantage of not creating massive snippet sprawl, and allows you to group small related sections into a single file. A single snippet can provide Parameters, Resources, Outputs, etc, this way, and just be called more than once from a layout to express them.
+
+For example, suppose we have a snippet containing a both the parameters and resources for some subcomponent of a layout:
+
+    <% if params[:section] == 'parameters' %>
+
+    "WebServerPort": {
+      "Description": "Web Server TCP port",
+      "Type": "Number",
+      "Default": "80"
+    }
+
+    <% elsif params[:section] == 'resources' %>
+
+    "ElasticLoadBalancer" : {
+      "Type" : "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties" : {
+      ...
+
+    <% else %>
+      <% raise "Missing section name when calling snippet!" %>
+
+    <% end %>
+
+Here we used the key `section` in the `params[]` hash, but this is merely by convention and the key name is arbitrary, so long as it is properly passed when calling this snippet in the appropriate sections of the layout:
+
+    "Parameters" : {
+      <%= snippet 'snippet_name', section: 'parameters' %>
+    },
+
+    "Resources" : {
+      <%= snippet 'snippet_name', section: 'resources' %>
+      ...
+    }
+
+No special code was used to accomplish this; it is just one of the capabilities available when using options with snippets and ERB in general.
+
+Contributing
+====
+
+Pull requests are welcome, though any breaking changes will be heavily reviewed.
+
+License
+====
+
+Per the LICENSE file in this repo, this project is released under the [MIT license](http://opensource.org/licenses/MIT).
