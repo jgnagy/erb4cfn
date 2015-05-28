@@ -32,7 +32,7 @@ The `snippets` directory contains partial JSON documents that should be valid in
 
     <%= snippet 'snippet_name' %>
 
-This assumes that there is a file under `snippets` called "snippet_name.json.erb". Snippets, in their simplest form, allows you to pull chunks of JSON out of a layout and move them into dedicated snippet files. This alone is a huge gain, as this allows these chunks to be reusable across multiple layouts. You can also use Ruby within the snippet to do things like iterate over a collection, insert dynamic data (like the current date and time), or calculate complex values.
+This assumes that there is a file under `snippets` called "snippet_name.json.erb". Snippets, in their simplest form, allow you to pull chunks of JSON out of a layout and move them into dedicated snippet files. This alone is a huge gain, as this allows these chunks to be reusable across multiple layouts. You can also use Ruby within the snippet to do things like iterate over a collection, insert dynamic data (like the current date and time), or calculate complex values.
 
 Simply running `generate_template.rb` on the layout will execute all embedded Ruby and result in a static template file.
 
@@ -87,7 +87,7 @@ Snippet Sectioning
 
 Using the `params[]` hash, it is possible to provide a section option when calling a snippet and use `if` and `elsif` within a snippet to only provide the requested section. This has the advantage of not creating massive snippet sprawl, and allows you to group small related sections into a single file. A single snippet can provide Parameters, Resources, Outputs, etc, this way, and just be called more than once from a layout to express them.
 
-For example, suppose we have a snippet containing a both the parameters and resources for some subcomponent of a layout:
+For example, suppose we have a snippet containing both the parameters and resources for some subcomponent of a layout:
 
     <% if params[:section] == 'parameters' %>
 
