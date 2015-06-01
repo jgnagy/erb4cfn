@@ -24,7 +24,7 @@ ENV["ERB4CFN_OPTS"].split(" ").each do |arg|
   elsif value.match /^[0-9]+$/
     value = Integer(value)
   end
-  RUNTIME_SETTINGS[key] = value
+  RUNTIME_SETTINGS[key.to_sym] = value
 end
 RUNTIME_SETTINGS.freeze
 
