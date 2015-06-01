@@ -10,9 +10,27 @@ require 'json'
 layout = ARGV[0]
 raise "Missing layout" unless layout
 
+# Allow passing settings for the layouts and snippets via a ENV variable
+runtime_settings = {}
+
+ENV["ERB4CFN_OPTS"] ||= "defaults=true"
+ENV["ERB4CFN_OPTS"].split(" ").each do |arg|
+  key, value = arg.split("=")
+  raise "Missing value for key '#{key}'" unless value
+  if value.match /^[Ff]alse$/
+    value = false
+  elsif value.match /^[Tt]rue$/
+    value = true
+  elsif value.match /^[0-9]+$/
+    value = Integer(value)
+  end
+  runtime_settings[key] = value
+end
+
 # Straight-up ERB parsing
-def render(file, params = {})
-  params = {}.merge(params) # blows up with bad input
+def render(file, options = {})
+  params = {}.merge(runtime_settings)
+  params = params.merge(options) # blows up with bad input
   erb_free = ERB.new(
       File.read(File.join(file)).gsub(/^(\t|\s)+<%/, '<%'), 0, "<>"
   ).result(binding)
