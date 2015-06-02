@@ -41,6 +41,11 @@ def snippet(name, params = {})
   render(File.join("snippets", "#{name}.json.erb"), params)
 end
 
+# Utility method for ensuring proper JSON (either quotes, braces, etc) on processed strings
+def q(string)
+  string.to_s.match(/^[\[{"].*[\]}"]$/) ? string.to_s : '"' + string.to_s + '"'
+end
+
 # Read in our template
 output = JSON.parse(render(File.join("layouts", "#{layout}.json.erb")))
 
